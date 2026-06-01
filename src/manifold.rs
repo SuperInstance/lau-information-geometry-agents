@@ -5,6 +5,7 @@ use nalgebra::{DMatrix, DVector};
 
 /// Normal distribution N(μ, σ²) parameterized by θ = (μ, log σ)
 /// Using log σ ensures unconstrained parameterization.
+#[allow(clippy::excessive_precision)]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct NormalManifold;
 
@@ -449,6 +450,7 @@ impl StatisticalManifold for BetaManifold {
 }
 
 /// Log-gamma approximation (Stirling-based for large values)
+#[allow(clippy::excessive_precision)]
 fn ln_gamma(x: f64) -> f64 {
     if x <= 0.0 {
         return f64::NAN;
@@ -568,7 +570,7 @@ impl StatisticalManifold for GammaManifold {
 
     fn fisher_information(&self, theta: &ManifoldPoint) -> DMatrix<f64> {
         let a = Self::alpha(theta);
-        let b = Self::beta(theta);
+        let _b = Self::beta(theta);
         let g11 = a * a * trigamma(a);
         let g22 = a; // β*β * (α/β²) = α
         DMatrix::from_row_slice(2, 2, &[
@@ -592,7 +594,7 @@ mod tests {
         let m = NormalManifold;
         let theta = NormalManifold::params(0.0, 1.0);
         let p0 = m.pdf(0.0, &theta);
-        assert_relative_eq!(p0, 1.0 / (2.0 * std::f64::consts::PI).sqrt().sqrt(), max_relative = 1e-6);
+        assert_relative_eq!(p0, 1.0 / (2.0 * std::f64::consts::PI).sqrt(), max_relative = 1e-6);
         // Actually, exp(-0) / (sqrt(2π)·1) = 1/sqrt(2π)
         assert_relative_eq!(p0, 1.0 / (2.0 * std::f64::consts::PI).sqrt(), max_relative = 1e-10);
     }
@@ -649,7 +651,7 @@ mod tests {
         let m = ExponentialManifold;
         let theta = ExponentialManifold::params(1.0);
         assert_relative_eq!(m.pdf(0.0, &theta), 1.0, max_relative = 1e-10);
-        assert_relative_eq!(m.pdf(1.0, &theta), std::f64::consts::E.exp(), max_relative = 1e-6);
+        assert_relative_eq!(m.pdf(1.0, &theta), 1.0 / std::f64::consts::E, max_relative = 1e-6);
         // 1/ e ≈ 0.3679
         assert_relative_eq!(m.pdf(1.0, &theta), 1.0 / std::f64::consts::E, max_relative = 1e-10);
     }

@@ -58,8 +58,8 @@ pub fn riemann_curvature(
     // where R_{1212} can be computed from Christoffel symbols
 
     // Christoffel symbols of the first kind: Γ_{ij,k} = (∂_i g_{jk} + ∂_j g_{ik} - ∂_k g_{ij}) / 2
-    let gamma_000 = dg00_0 / 2.0;
-    let gamma_001 = (dg00_1 - dg01_0 + dg01_0) / 2.0; // Hmm, let me be more careful
+    let _gamma_000 = dg00_0 / 2.0;
+    let _gamma_001 = (dg00_1 - dg01_0 + dg01_0) / 2.0; // Hmm, let me be more careful
 
     // Γ_{ij,k} = (∂_i g_{jk} + ∂_j g_{ik} - ∂_k g_{ij}) / 2
     // Γ_{00,0} = ∂_0 g_{00} / 2
@@ -85,12 +85,12 @@ pub fn riemann_curvature(
     let gi11 = g[(0, 0)] / det;
 
     // Γ^0_{ij} = gi00 * Γ_{ij,0} + gi01 * Γ_{ij,1}
-    let G0_00 = gi00 * g000 + gi01 * g001;
-    let G0_01 = gi00 * g010 + gi01 * g011;
-    let G0_11 = gi00 * g110 + gi01 * g111;
-    let G1_00 = gi01 * g000 + gi11 * g001;
-    let G1_01 = gi01 * g010 + gi11 * g011;
-    let G1_11 = gi01 * g110 + gi11 * g111;
+    let _g0_00 = gi00 * g000 + gi01 * g001;
+    let _g0_01 = gi00 * g010 + gi01 * g011;
+    let _g0_11 = gi00 * g110 + gi01 * g111;
+    let _g1_00 = gi01 * g000 + gi11 * g001;
+    let _g1_01 = gi01 * g010 + gi11 * g011;
+    let _g1_11 = gi01 * g110 + gi11 * g111;
 
     // R_{1212} = ∂_1 Γ_{12,1} - ∂_2 Γ_{11,1} + Γ^m_{12} Γ_{m1,1} - Γ^m_{11} Γ_{m2,1}
     // In 2D: R_{1212} = ∂_1 Γ_{01,1} - ∂_0 Γ_{11,1} + Γ^m_{01} Γ_{m1} - Γ^m_{11} Γ_{m0}
@@ -115,7 +115,7 @@ pub fn riemann_curvature(
     theta_mp.theta[1] += eps;
     let mut theta_mm = theta.clone();
     theta_mm.theta[0] -= eps;
-    theta_mm[1] -= eps;
+    theta_mm.theta[1] -= eps;
 
     // Hmm, this is getting quite involved. Let me use a simpler approach.
     // Scalar curvature for 2D = 2 * Gaussian curvature
@@ -141,7 +141,7 @@ fn compute_sectional_curvature(
     eps: f64,
 ) -> f64 {
     // Compute Gaussian curvature for the first 2 coordinates
-    let mut t = theta.clone();
+    let t = theta.clone();
     let g = manifold.fisher_information(&t);
 
     if g.nrows() < 2 {
@@ -154,9 +154,9 @@ fn compute_sectional_curvature(
     }
 
     // Compute second derivatives of metric numerically
-    let g00 = g[(0, 0)];
-    let g01 = g[(0, 1)];
-    let g11 = g[(1, 1)];
+    let _g00 = g[(0, 0)];
+    let _g01 = g[(0, 1)];
+    let _g11 = g[(1, 1)];
 
     // First derivatives of metric components
     let mut tp0 = theta.clone();
@@ -174,12 +174,12 @@ fn compute_sectional_curvature(
     let gm1 = manifold.fisher_information(&tm1);
 
     // ∂g_{ij}/∂θ_k
-    let dg00_d0 = (gp0[(0, 0)] - gm0[(0, 0)]) / (2.0 * eps);
-    let dg01_d0 = (gp0[(0, 1)] - gm0[(0, 1)]) / (2.0 * eps);
-    let dg11_d0 = (gp0[(1, 1)] - gm0[(1, 1)]) / (2.0 * eps);
-    let dg00_d1 = (gp1[(0, 0)] - gm1[(0, 0)]) / (2.0 * eps);
-    let dg01_d1 = (gp1[(0, 1)] - gm1[(0, 1)]) / (2.0 * eps);
-    let dg11_d1 = (gp1[(1, 1)] - gm1[(1, 1)]) / (2.0 * eps);
+    let _dg00_d0 = (gp0[(0, 0)] - gm0[(0, 0)]) / (2.0 * eps);
+    let _dg01_d0 = (gp0[(0, 1)] - gm0[(0, 1)]) / (2.0 * eps);
+    let _dg11_d0 = (gp0[(1, 1)] - gm0[(1, 1)]) / (2.0 * eps);
+    let _dg00_d1 = (gp1[(0, 0)] - gm1[(0, 0)]) / (2.0 * eps);
+    let _dg01_d1 = (gp1[(0, 1)] - gm1[(0, 1)]) / (2.0 * eps);
+    let _dg11_d1 = (gp1[(1, 1)] - gm1[(1, 1)]) / (2.0 * eps);
 
     // Mixed second derivative of g_{00}
     let tpp = {
@@ -207,8 +207,8 @@ fn compute_sectional_curvature(
         manifold.fisher_information(&t)
     };
 
-    let d2g00_d01 = (tpp[(0, 0)] - tpm[(0, 0)] - tmp_[(0, 0)] + tmm[(0, 0)]) / (4.0 * eps * eps);
-    let d2g11_d01 = (tpp[(1, 1)] - tpm[(1, 1)] - tmp_[(1, 1)] + tmm[(1, 1)]) / (4.0 * eps * eps);
+    let _d2g00_d01 = (tpp[(0, 0)] - tpm[(0, 0)] - tmp_[(0, 0)] + tmm[(0, 0)]) / (4.0 * eps * eps);
+    let _d2g11_d01 = (tpp[(1, 1)] - tpm[(1, 1)] - tmp_[(1, 1)] + tmm[(1, 1)]) / (4.0 * eps * eps);
 
     // Gaussian curvature using Brioschi formula:
     // K = (1/det(g)) * [ -1/2 * ∂²g_{11}/∂θ₀² + 1/2 * ∂²g_{00}/∂θ₀∂θ₁
@@ -233,7 +233,7 @@ fn compute_sectional_curvature(
 
     let d2det_d00 = (det_p0 - 2.0 * det + det_m0) / (eps * eps);
     let d2det_d11 = (det_p1 - 2.0 * det + det_m1) / (eps * eps);
-    let d2det_d01 = (det_pp - det_p0 - det_p1 + 2.0 * det - det_m0 - det_m1 + det_mm) / (eps * eps)
+    let _d2det_d01 = (det_pp - det_p0 - det_p1 + 2.0 * det - det_m0 - det_m1 + det_mm) / (eps * eps)
         + d2det_d00 / 2.0 + d2det_d11 / 2.0; // not quite right, but approximation
 
     // Rough scalar curvature estimate

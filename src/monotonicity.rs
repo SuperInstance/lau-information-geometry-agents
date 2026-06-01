@@ -6,8 +6,10 @@
 //! - The Fisher information matrix of a marginal is ≤ the full Fisher info (in Loewner order)
 //! - Sufficient statistics preserve Fisher information
 
-use crate::*;
 use nalgebra::DMatrix;
+
+#[allow(unused_imports)]
+use crate::*;
 
 /// Verify that coarse-graining reduces Fisher information.
 /// Given Fisher matrices g_full and g_coarse, check that g_full - g_coarse is PSD.
@@ -21,7 +23,7 @@ pub fn verify_monotonicity(g_full: &DMatrix<f64>, g_coarse: &DMatrix<f64>) -> Mo
     let same_dim = g_full.nrows() == g_coarse.nrows();
     let loewner_ok = if same_dim {
         let diff = g_full - g_coarse;
-        let n = diff.nrows();
+        let _n = diff.nrows();
         // Check if all eigenvalues of diff are >= 0
         let eigenvalues = diff.symmetric_eigenvalues();
         eigenvalues.iter().all(|&e| e >= -1e-10)
@@ -49,7 +51,7 @@ pub struct MonotonicityResult {
 /// Coarse-graining operation: aggregate categories in a categorical distribution.
 /// This reduces the dimension of the parameter space.
 pub fn coarse_grain_categorical(
-    n_categories: usize,
+    _n_categories: usize,
     merge_groups: &[Vec<usize>],
     probs: &[f64],
 ) -> Vec<f64> {
@@ -88,10 +90,10 @@ pub fn data_processing_inequality(
     fisher_full: &DMatrix<f64>,
     fisher_processed: &DMatrix<f64>,
 ) -> DPIResult {
-    let trace_full = (0..fisher_full.nrows()).map(|i| fisher_full[(i, i)]).sum();
-    let trace_processed = (0..fisher_processed.nrows()).map(|i| fisher_processed[(i, i)]).sum();
+    let trace_full: f64 = (0..fisher_full.nrows()).map(|i| fisher_full[(i, i)]).sum();
+    let trace_processed: f64 = (0..fisher_processed.nrows()).map(|i| fisher_processed[(i, i)]).sum();
 
-    let sufficient = (trace_full - trace_processed).abs() < 1e-10;
+    let sufficient: bool = (trace_full - trace_processed).abs() < 1e-10_f64;
     let lossy = trace_full > trace_processed + 1e-10;
 
     DPIResult {

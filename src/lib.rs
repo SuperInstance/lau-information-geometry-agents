@@ -89,7 +89,7 @@ pub trait StatisticalManifold: Send + Sync {
     fn fisher_information(&self, theta: &ManifoldPoint) -> DMatrix<f64>;
 
     /// Sample from p(x; θ) — optional, default panics
-    fn sample(&self, _theta: &ManifoldPoint, _rng: &mut impl rand::Rng) -> f64 {
+    fn sample(&self, _theta: &ManifoldPoint, _rng: &mut dyn rand::RngCore) -> f64 {
         unimplemented!("Sampling not implemented for this manifold")
     }
 

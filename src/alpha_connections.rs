@@ -1,3 +1,4 @@
+#![allow(clippy::needless_range_loop)]
 //! Amari's α-connections: a one-parameter family of affine connections on statistical manifolds.
 //!
 //! The α-connection generalizes the Levi-Civita connection (α=0):
@@ -60,7 +61,7 @@ pub fn alpha_christoffel_first_kind(
                 let d2l_da = (score_p[b] - score_m[b]) / (2.0 * eps);
 
                 // Γ_{ab} contribution: (d2l_da + c * score[a] * score[b]) * score weighted by p
-                let conn = (d2l_da + c * score[a] * score[b]);
+                let conn = d2l_da + c * score[a] * score[b];
                 for k in 0..dim {
                     gamma[(a, b)] += conn * score[k] * p * dx;
                 }

@@ -72,7 +72,7 @@ pub fn riemannian_gradient_norm(
     grad: &[f64],
 ) -> f64 {
     let n = grad.len();
-    let g = DVector::from_vec(grad.to_vec());
+    let _g = DVector::from_vec(grad.to_vec());
     let mut quad = 0.0;
     for i in 0..n {
         for j in 0..n {

@@ -76,7 +76,7 @@ impl MarkovMorphism {
         let m = n - 1;
         let mut mat = DMatrix::zeros(m, n);
         let mut row = 0;
-        let mut col = 0;
+        let mut _col = 0;
         let mut merged_row = 0;
         for k in 0..n {
             if k == j {
@@ -216,7 +216,7 @@ mod tests {
 
     #[test]
     fn test_markov_identity() {
-        let m = MarkovMorphism::identity(3);
+        let m = MarkovMorphism::identity(2);
         let fisher = DMatrix::from_row_slice(2, 2, &[3.0, 1.0, 1.0, 3.0]);
         // Identity should preserve Fisher (up to embedding)
         assert!(m.verify_fisher_invariance(&fisher));

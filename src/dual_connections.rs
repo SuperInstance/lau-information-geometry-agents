@@ -59,7 +59,7 @@ impl DualConnections {
         eps: f64,
     ) -> f64 {
         let dim = theta.dim();
-        let mut max_violation = 0.0;
+        let mut max_violation: f64 = 0.0;
 
         for i in 0..dim {
             for j in 0..dim {
