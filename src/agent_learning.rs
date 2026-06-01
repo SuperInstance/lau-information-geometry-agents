@@ -293,7 +293,7 @@ mod tests {
         let start = NormalManifold::params(3.0, 1.0);
         let mut agent = BeliefAgent::new(start.clone(), 0.01);
 
-        let initial_dist = agent.distance_to(&m, &target);
+        let _initial_dist = agent.distance_to(&m, &target);
         for _ in 0..10 {
             let grad: Vec<f64> = agent
                 .belief
